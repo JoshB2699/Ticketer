@@ -4,11 +4,8 @@ var Toolbar = React.createClass({
     render: function() {
     return(
         <div id="toolbar">
-            <p>
-            <a href="/">Home</a>
-            <a href="../image_selector">Images</a>
-            <a href="../games">Games</a>
-            </p>
+                <a href="/"><img src = "./public/images/home.ico" height = "32" width = "32"/></a>
+                <a href="/login"><l> Login</l></a>
         </div>
         )
     }

@@ -13,9 +13,16 @@ var indexView = function(req,res) {
   res.render('index.ejs');
 };
 
+var loginView = function(req,res) {
+  res.render('login.ejs');
+};
+
+
 app.use('/public',
   express.static(path.join(__dirname, '../public'))
 );
+
+app.get('/login',loginView)
 
 app.get('*', indexView);
 
