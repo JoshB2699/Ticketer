@@ -1,18 +1,19 @@
-<!DOCTYPE HTML>
-<html lang="en">
+<!DOCTYPE html>
+<html lang = "en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
-    <title>Ticketer - Main Page</title>
+    <title>Ticketer - New Ticket</title>
   </head>
   <body>
     <div class="container">
       <div id="Toolbar"></div>
-      <h1><u>Ticketer</u></h1>
-      <p>
-        A ticketing system for AQA GCE Computing Project
-      </p>
+      <form>
+        Name: <input type = "text" name = "ticketname" /><br />
+        Description: <input type = "text" name = "ticketdesc" /><br />
+        <submit><button>Submit Ticket</button></submit>
+      </form>
       <script src="./public/browser.bundle.js"></script>
     </div>
   </body>

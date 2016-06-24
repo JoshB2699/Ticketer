@@ -1,6 +1,7 @@
 body {
     background-color: #b2b2b2;
     font-family: "Verdana", sans-serif;
+    padding-top: 50px;
 }
 #toolbar {
     position: fixed;

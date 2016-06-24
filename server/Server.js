@@ -17,12 +17,18 @@ var loginView = function(req,res) {
   res.render('login.ejs');
 };
 
+var ticketformView = function(req,res) {
+  res.render('ticketform.ejs');
+};
+
 
 app.use('/public',
   express.static(path.join(__dirname, '../public'))
 );
 
-app.get('/login',loginView)
+app.get('/ticketform', ticketformView)
+
+app.get('/login',loginView);
 
 app.get('*', indexView);
 
