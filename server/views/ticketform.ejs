@@ -16,20 +16,54 @@
           <a class="navbar-brand" href="/">Ticketer </a>
         </div>
         <ul class="nav navbar-nav">
-          <li><a href="/main">Home</a></li>
+          <li><a href="/">Home</a></li>
           <li class="active"><a href="/createTicket">Create Ticket</a></li>
+          <li><a href ="/logout">Logout</a></li>
         </ul>
       </div>
     </nav>
 
     <div class="container">
-      <form>
-        Name: <input type = "text" name = "ticketname" /><br />
-        Description: <input type = "text" name = "ticketdesc" /><br />
-        <submit><button>Submit Ticket</button></submit>
-      </form>
-    </div>
+        <div class="jumbotron">
+          <div class="row">
+            <div class="col-sm-3">
+              <h2>Create Ticket</h2>
+            </div>
+          </div>
+          <form name="ticketform" action="/createTicket" method="post">
 
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="ticketname">Ticket Name: </label>
+                  <input class="form-control" type="text" name="ticketname" id="ticketname" placeholder="Name" required="true">
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label for="room">Room: </label>
+                  <input class="form-control" type="text" name="room" id="room" placeholder="Room" required="true">
+                </div>
+              </div>
+              <div class="col-sm-6">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="ticketdesc">Description: </label>
+              <input class="form-control" type="text" name="ticketdesc" id="ticketdesc" placeholder="Description" required="true">
+            </div>
+
+            <div class="row">
+              <div class="col-sm-3">
+                <button type="submit"  name="ticketform" id="ticketform" class="btn btn-block btn-primary">Submit Ticket</button>
+              </div>
+              <div class="col-sm-9">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     <script src="./public/browser.bundle.js"></script>
   </body>
 </html>

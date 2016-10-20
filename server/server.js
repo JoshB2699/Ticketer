@@ -19,26 +19,16 @@ mongoose.connect(configDB.url); // connect to our database
 var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-var routes = require('./config/routes.js');
-
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-app.get('/', routes.indexView);
-app.get('/login', routes.loginView);
-app.get('/loginerror', routes.loginerrorView);
-app.get('/main', routes.mainView);
-app.get('/signup', routes.signupView);
-app.get('/createTicket', routes.ticketformView);
-app.post('/signup', routes.signupPost);
-app.post('/login', routes.loginPost);
+require('./config/routes.js')(app, passport);
 
 app.listen(port);
 console.log('Server is running on port ' + port);
