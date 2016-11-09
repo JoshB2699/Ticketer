@@ -3,8 +3,8 @@ var path = require('path');
 module.exports = {
     entry: "./src/app.jsx",
     output: {
-        path: './public',
-        filename: 'browser.bundle.js',
+        path: './server/public/webpack',
+        filename: 'bundle.js',
             publicPath: '/public',
     },
 

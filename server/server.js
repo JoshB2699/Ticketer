@@ -13,10 +13,10 @@ var morgan   = require('morgan');
 var configDB = require('./config/database.js');
 
 require('./config/passport')(passport); // pass passport for configuration
-
 mongoose.connect(configDB.url); // connect to our database
 
 var app = express();
+app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(morgan('dev'));
@@ -31,4 +31,4 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 require('./config/routes.js')(app, passport);
 
 app.listen(port);
-console.log('Server is running on port ' + port);
+console.log('Ticketer is running on port ' + port);

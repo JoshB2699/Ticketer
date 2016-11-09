@@ -18,6 +18,7 @@
         <ul class="nav navbar-nav">
           <li><a href="/">Home</a></li>
           <li class="active"><a href="/createTicket">Create Ticket</a></li>
+          <li><a href="/ticketViewer">View Tickets</a></li>
           <li><a href ="/logout">Logout</a></li>
         </ul>
       </div>
@@ -35,8 +36,8 @@
             <div class="row">
               <div class="col-sm-4">
                 <div class="form-group">
-                  <label for="ticketname">Ticket Name: </label>
-                  <input class="form-control" type="text" name="ticketname" id="ticketname" placeholder="Name" required="true">
+                  <label for="name">Ticket Name: </label>
+                  <input class="form-control" type="text" name="name" id="name" placeholder="Name" required="true">
                 </div>
               </div>
               <div class="col-sm-2">
@@ -50,8 +51,8 @@
             </div>
 
             <div class="form-group">
-              <label for="ticketdesc">Description: </label>
-              <input class="form-control" type="text" name="ticketdesc" id="ticketdesc" placeholder="Description" required="true">
+              <label for="desc">Description: </label>
+              <input class="form-control" type="text" name="desc" id="desc" placeholder="Description" required="true">
             </div>
 
             <div class="row">
@@ -64,6 +65,6 @@
           </form>
         </div>
       </div>
-    <script src="./public/browser.bundle.js"></script>
+      <script src="/webpack/bundle.js"></script>
   </body>
 </html>
