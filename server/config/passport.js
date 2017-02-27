@@ -60,6 +60,13 @@ module.exports = function(passport) {
                 newUser.local.username    = username;
                 newUser.local.password = newUser.generateHash(password);
 
+                if (req.body.adminUser == 'on') {
+                  newUser.local.isAdmin = true;
+                } else {
+                  newUser.local.isAdmin = false;
+                }
+
+
                 // save the user
                 newUser.save(function(err) {
                     if (err)

@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>Ticketer - Main Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      function GetClock(){
+        var d=new Date();
+        var nmonth=d.getMonth(),ndate=d.getDate(),nyear=d.getYear();
+        if(nyear<1000) nyear+=1900;
+        var nhour=d.getHours(),nmin=d.getMinutes();
+        if(nmin<=9) nmin="0"+nmin;
+        document.getElementById('clockbox').innerHTML=""+ndate+"/"+(nmonth+1)+"/"+nyear+" "+nhour+":"+nmin+"";
+      };
+      window.onload=function(){
+      GetClock();};
+      setInterval(GetClock,1000);
+    </script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Ticketer </a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/">Home</a></li>
+          <li><a href="/createTicket">Create Ticket</a></li>
+          <li><a href="/ticketViewer">View Tickets</a></li>
+        </ul>
+        <ul class="nav navbar-nav pull-right">
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= username%>
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/changePassword">Change Password</a></li>
+            </ul>
+          </li>
+          <li><a href ="/logout">Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="jumbotron">
+        <div class="row">
+          <div class="col-sm-3">
+            <h4>Welcome, <%=username %>.</h4>
+          </div>
+          <div class="col-sm-7"></div>
+          <div class="col-sm-2">
+            <h4><div id="clockbox"></div></h4>
+          </div>
+        </div>
+        <p></p>
+        <div class="row">
+          <div class="col-sm-3">
+            <a href="/createTicket"><button class="btn btn-block btn-primary">Create New Ticket</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src = "/webpack/bundle.js"></script>
+  </body>
+</html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang = "en">
   <head>
-    <title>Ticketer - View Tickets</title>
+    <title>Ticketer - Remove Users</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
@@ -32,7 +32,7 @@
         <div class="jumbotron">
           <div class="row">
             <div class="col-sm-3">
-              <h2>Active Tickets</h2>
+              <h2>Remove Users</h2>
             </div>
             <div class="col-sm-9">
             </div>
@@ -42,18 +42,20 @@
               <h4>
                 <table style = "width:100%">
                   <tr>
-                    <th>Title</th>
-                    <th>Room</th>
-                    <th>Description</th>
-                    <th>User</th>
+                    <th>Username</th>
+                    <th>Active Tickets</th>
+                    <th>Admin Status</th>
                   </tr>
 
-                  <% for (var i=0; i < tickets.length; i++) {%>
+                  <% for (var i=0; i < users.length; i++) {%>
                     <tr>
-                      <td><%=tickets[i].name %></td>
-                      <td><%=tickets[i].room %></td>
-                      <td><%=tickets[i].desc %></td>
-                      <td><%=tickets[i].author %></td>
+                      <td><%=users[i].username %></td>
+                      <td><%=users[i].activeTickets %></td>
+                      <% if (users[i].isAdmin) {%>
+                        <td> Yes </td>
+                      <% } else { %>
+                        <td>No</td>
+                      <% } %>
                     </tr>
                   <% } %>
 
