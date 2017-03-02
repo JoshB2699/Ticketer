@@ -21,7 +21,10 @@ module.exports = function(app, passport) {
 
     app.get('/signup', isLoggedIn, function(req, res) {
       if (req.user.local.isAdmin) {
-        res.render('signup.ejs', { message: req.flash('signupMessage') });
+        res.render('signup.ejs', {
+          message: req.flash('signupMessage'),
+          username : req.user.local.username
+        });
       } else {
         res.redirect('/');
       }
@@ -87,6 +90,7 @@ module.exports = function(app, passport) {
     app.post('/changePassword', isLoggedIn, function(req, res){
       if(!req.user.validPassword(req.body.currentPassword)) {
         console.log('Wrong password');
+        req.flash('info', 'Password incorrect!');
         res.redirect('/changePassword');
       } else {
         if(req.body.newPassword != req.body.confirmPassword) {
