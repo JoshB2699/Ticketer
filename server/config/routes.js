@@ -127,7 +127,8 @@ module.exports = function(app, passport) {
               name : t[i].name,
               room : t[i].room,
               desc : t[i].desc,
-              author : t[i].author
+              author : t[i].author,
+              ticketid : t[i]._id
             });
           }
 
@@ -163,9 +164,9 @@ module.exports = function(app, passport) {
     }
     });
 
-    app.get('*', function(req,res){
-      res.redirect('/');
-    });
+    // app.get('*', function(req,res){
+    //   res.redirect('/');
+    // });
 
   function isLoggedIn(req, res, next) {
       if (req.isAuthenticated())
