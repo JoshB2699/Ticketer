@@ -2,11 +2,11 @@
   "name": "Ticketer",
   "version": "0.0.1",
   "description": "A ticketing web app for A-Level project",
-  "main": "server/server.js",
+  "main": "server.js",
   "scripts": {
     "build": "webpack",
     "watch": "webpack -w",
-    "start": "node ./server/server.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "babel-preset-react": "~6.5.0",

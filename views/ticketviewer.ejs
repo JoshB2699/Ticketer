@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <title>Ticketer - View Tickets</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="public/css/navbar.css" rel="stylesheet" type="text/css" />
+    <style>
+      body {
+          margin: 0;
+      }
+
+      .overlay {
+          height: 0%;
+          width: 100%;
+          position: fixed;
+          z-index: 1;
+          top: 0;
+          left: 0;
+          background-color: rgb(0,0,0);
+          background-color: rgba(0,0,0, 0.9);
+          overflow-y: hidden;
+          transition: 0.5s;
+      }
+
+      .overlay-content {
+          position: relative;
+          top: 25%;
+          width: 100%;
+          text-align: center;
+          margin-top: 30px;
+      }
+
+      .overlay a {
+          padding: 8px;
+          text-decoration: none;
+          font-size: 36px;
+          color: #818181;
+          display: block;
+          transition: 0.3s;
+      }
+
+      .overlay a:hover, .overlay a:focus {
+          color: #f1f1f1;
+      }
+
+      .overlay .closebtn {
+          position: absolute;
+          top: 20px;
+          right: 45px;
+          font-size: 60px;
+      }
+
+      @media screen and (max-height: 450px) {
+        .overlay {overflow-y: auto;}
+        .overlay a {font-size: 20px}
+        .overlay .closebtn {
+          font-size: 40px;
+          top: 15px;
+          right: 35px;
+        }
+      }
+      </style>
+  </head>
+  <body>
+    <% for (var i=0; i < tickets.length; i++) {%>
+      <div id="specificTicket<%= i %>" class="overlay">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeTicket(<%= i %>)">&times;</a>
+        <div class="overlay-content">
+          <div class="container">
+            <div class="jumbotron">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h4>
+                    <form name="ticketform" action="/updateTicket/<%=tickets[i].id%>" method="post">
+
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            <label for="name">Ticket Name: </label>
+                            <input class="form-control" type="text" name="name" id="name" value="<%=tickets[i].name%>" placeholder="Name" required="true">
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <div class="form-group">
+                            <label for="room">Room: </label>
+                            <input class="form-control" type="text" name="room" id="room" value="<%=tickets[i].room%>" placeholder="Room" required="true">
+                          </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2">
+                          <label for="status">Status: </label>
+                          <!-- ADD IF STATEMENT FOR DEFAULT OPTION BASED ON OPTION IN DATABASE -->
+                          <select class="form-control" name="status" id="status" value="<%= tickets[i].status %>">
+                            <option value="Unassigned">Unassigned</option>
+                            <option value="InProg">In Progress</option>
+                            <option value="Completed">Completed</option>
+                          </select>
+                        </div>
+                        <div class="col-sm-2">
+                          <label for="technicianAssigned">Technician: </label>
+                          <select class="form-control" name="technicianAssigned" id="technicianAssigned">
+                            <option></option>
+                            <% for(var j = 0; j < technicians.length; j++) {%>
+                              <option value="<%= technicians[j].name %>"><%= technicians[j].name %></option>
+                            <% } %>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="desc">Description: </label>
+                        <input class="form-control" type="text" name="desc" id="desc" value="<%=tickets[i].desc%>" placeholder="Description" required="true">
+                      </div>
+
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <button type="submit"  name="ticketform" id="ticketform" class="btn btn-block btn-primary">Update Ticket</button>
+                        </div>
+                        <div class="col-sm-9">
+                        </div>
+                      </div>
+                    </form>
+                  </h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% } %>
+
+    <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Ticketer </a>
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="/">Home</a></li>
+          <li><a href="/createTicket">Create Ticket</a></li>
+          <li class="active"><a href="/ticketViewer">View Tickets</a></li>
+        </ul>
+        <ul class="nav navbar-nav pull-right">
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= username%>
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/changePassword">Change Password</a></li>
+              <li><a href ="/logout">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      </div>
+    </nav>
+
+    <div class="container">
+        <div class="jumbotron">
+          <div class="row">
+            <div class="col-sm-3">
+              <h2>Active Tickets</h2>
+            </div>
+            <div class="col-sm-9">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>
+                <table class = "table table-striped table-bordered table-hover" style = "width:100%">
+                  <thead class = "thead-default">
+                    <tr>
+                      <th>Title</th>
+                      <th>Room</th>
+                      <th>Description</th>
+                      <th>User</th>
+                      <th>Status</th>
+                      <th>Assigned Technician</th>
+                    </tr>
+                  </thead>
+
+                  <% for (var i=0; i < tickets.length; i++) {%>
+                      <tr href="/viewSpecificTicket/<%=tickets[i].ticketid %>">
+                        <td><span style="cursor:pointer" onclick="openTicket(<%= i %>)"><%=tickets[i].name %></span></td>
+                        <td><%=tickets[i].room %></td>
+                        <td><%=tickets[i].desc %></td>
+                        <td><%=tickets[i].author %></td>
+                        <td><%=tickets[i].status %></td>
+                        <td><%=tickets[i].assigned %></td>
+                      </tr>
+                  <% } %>
+
+                </table>
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="/webpack/bundle.js"></script>
+      <script>
+        function openTicket(i) {
+            document.getElementById("specificTicket" + i).style.height = "100%";
+        }
+
+        function closeTicket(i) {
+            document.getElementById("specificTicket" + i).style.height = "0%";
+        }
+
+        document.onkeydown = function(evt) {
+            evt = evt || window.event;
+            var isEscape = false;
+            if ("key" in evt) {
+                isEscape = (evt.key == "Escape" || evt.key == "Esc");
+            } else {
+                isEscape = (evt.keyCode == 27);
+            }
+            if (isEscape) {
+              <% for (var i=0; i < tickets.length; i++) {%>
+                closeTicket(<%=i%>);
+              <% } %>
+            }
+        };
+      </script>
+  </body>
+</html>

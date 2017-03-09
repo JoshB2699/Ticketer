@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <title>Ticketer - New Ticket</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="public/css/navbar.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Ticketer </a>
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="/">Home</a></li>
+          <li class = "active"><a href="/createTicket">Create Ticket</a></li>
+          <li><a href="/ticketViewer">View Tickets</a></li>
+        </ul>
+        <ul class="nav navbar-nav pull-right">
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= username%>
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/changePassword">Change Password</a></li>
+              <li><a href ="/logout">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      </div>
+    </nav>
+
+
+    <div class="container">
+        <div class="jumbotron">
+          <div class="row">
+            <div class="col-sm-3">
+              <h2>Create Ticket</h2>
+            </div>
+          </div>
+          <form name="ticketform" action="/createTicket" method="post">
+
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="name">Ticket Name: </label>
+                  <input class="form-control" type="text" name="name" id="name" placeholder="Name" required="true">
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label for="room">Room: </label>
+                  <input class="form-control" type="text" name="room" id="room" placeholder="Room" required="true">
+                </div>
+              </div>
+              <div class="col-sm-6">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="desc">Description: </label>
+              <input class="form-control" type="text" name="desc" id="desc" placeholder="Description" required="true">
+            </div>
+
+            <div class="row">
+              <div class="col-sm-3">
+                <button type="submit"  name="ticketform" id="ticketform" class="btn btn-block btn-primary">Submit Ticket</button>
+              </div>
+              <div class="col-sm-9">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <script src="/webpack/bundle.js"></script>
+  </body>
+</html>
