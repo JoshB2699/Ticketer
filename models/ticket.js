@@ -5,9 +5,8 @@ var ticketSchema = mongoose.Schema({
         room  : String,
         desc  : String,
         author : String,
-        status : String,
+        status : String,         //Reported, In Progress, Completed
         assigned : String,
-        //Reported, In Progress, Completed
 });
 
 module.exports = mongoose.model('Ticket', ticketSchema);

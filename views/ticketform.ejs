@@ -8,6 +8,7 @@
     <link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="public/css/navbar.css" rel="stylesheet" type="text/css" />
+    <style>textarea { resize: vertical; }</style>
   </head>
 
   <body>
@@ -45,7 +46,7 @@
     <div class="container">
         <div class="jumbotron">
           <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-6">
               <h2>Create Ticket</h2>
             </div>
           </div>
@@ -67,12 +68,14 @@
               <div class="col-sm-6">
               </div>
             </div>
-
-            <div class="form-group">
-              <label for="desc">Description: </label>
-              <input class="form-control" type="text" name="desc" id="desc" placeholder="Description" required="true">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="desc">Description: </label>
+                  <textarea class="form-control" name="desc" id="desc" rows="6" placeholder="Description" required="true"></textarea>
+                </div>
+              </div>
             </div>
-
             <div class="row">
               <div class="col-sm-3">
                 <button type="submit"  name="ticketform" id="ticketform" class="btn btn-block btn-primary">Submit Ticket</button>

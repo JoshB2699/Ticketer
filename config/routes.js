@@ -8,8 +8,24 @@ module.exports = function(app, passport) {
         res.render('index.ejs');
       } else {
         if (req.user.local.isAdmin) {
-          res.render('adminMain.ejs', {
-              username : req.user.local.username
+          Ticket.find({ 'assigned' : req.user.local.username, 'status' : 'In Progress' }, function(err, t) {
+            if (err) {
+              throw err;
+            } else {
+              var tickets = [];
+
+              for (i=0; i < t.length; i++) {
+                tickets.push({
+                  name : t[i].name,
+                  room : t[i].room,
+                  desc : t[i].desc
+                });
+              }
+              res.render('adminMain.ejs', {
+                  username : req.user.local.username,
+                  tickets : tickets,
+              });
+            }
           });
         } else {
           res.render('nonAdminMain.ejs', {
@@ -70,6 +86,7 @@ module.exports = function(app, passport) {
             desc: req.body.desc,
             author: user.local.username,
             status: 'Unassigned',
+            assigned: ""
         });
 
         t.save(function(err) {
@@ -119,6 +136,12 @@ module.exports = function(app, passport) {
         } else {
 
           var tickets = [];
+          var names = [];
+          var rooms = [];
+          var descs = [];
+          var authors = [];
+          var assigned = [];
+          var statuses = [];
 
           for (i=0; i < t.length; i++) {
             tickets.push({
@@ -130,11 +153,17 @@ module.exports = function(app, passport) {
               assigned : t[i].assigned,
               status : t[i].status,
             });
+            names.push(t[i].name.toLowerCase());
+            rooms.push(t[i].room.toLowerCase());
+            descs.push(t[i].desc.toLowerCase());
+            authors.push(t[i].author.toLowerCase());
+            assigned.push(t[i].assigned.toLowerCase());
+            statuses.push(t[i].status.toLowerCase());
           }
 
-          Users.find({'local.isAdmin' : 'true'}, function(err,u) {
-            if (err) {
-              throw err;
+          Users.find({'local.isAdmin' : 'true'}, function(error,u) {
+            if (error) {
+              throw error;
             } else {
               var technicians = [];
 
@@ -144,52 +173,59 @@ module.exports = function(app, passport) {
                 });
               }
 
-              res.render('ticketviewer.ejs', {
+              res.render('ticketviewerAdmin.ejs', {
                   username : req.user.local.username,
                   tickets : tickets,
                   technicians : technicians,
+                  names : names,
+                  descs : descs,
+                  authors : authors,
+                  assigned : assigned,
+                  statuses : statuses
               });
             }
           });
-
-
         }
       });
-
-      Users.find({'local.isAdmin' : 'true'}, function(err,u) {
-        if (err) {
-          throw err;
-        } else {
-          var technicians = [];
-
-          for (i=0; i < u.length; i++) {
-            technicians.push({
-              name : u[i].local.username
-            });
-          }
-        }
-      });
-
-
     } else {
       Ticket.find({ 'author' : user.local.username }, function(err, t) {
         if (err) {
           throw err;
         } else {
           var tickets = [];
+          var names = [];
+          var rooms = [];
+          var descs = [];
+          var authors = [];
+          var assigned = [];
+          var statuses = [];
 
           for (i=0; i < t.length; i++) {
             tickets.push({
               name : t[i].name,
               room : t[i].room,
               desc : t[i].desc,
-              author : t[i].author
+              author : t[i].author,
+              assigned : t[i].assigned,
+              status : t[i].status,
             });
+
+            names.push(t[i].name.toLowerCase());
+            rooms.push(t[i].room.toLowerCase());
+            descs.push(t[i].desc.toLowerCase());
+            authors.push(t[i].author.toLowerCase());
+            assigned.push(t[i].assigned.toLowerCase());
+            statuses.push(t[i].status.toLowerCase());
           }
 
           res.render('ticketviewer.ejs', {
               username : req.user.local.username,
               tickets : tickets,
+              names : names,
+              descs : descs,
+              authors : authors,
+              assigned : assigned,
+              statuses : statuses
           });
         }
       });
@@ -198,9 +234,13 @@ module.exports = function(app, passport) {
 
     app.post('/updateTicket/:id', function(req,res){
       var id = req.params.id;
-      res.redirect('/ticketViewer');
       var query = {'_id' : id};
-      var update = {$set: {'name' : req.body.name, 'room' : req.body.room, 'desc' : req.body.desc, 'assigned' : req.body.technicianAssigned}};
+      var update;
+      if(!req.body.technicianAssigned || (req.body.status == "Completed" && req.body.technicianAssigned) || (req.body.status == "Unassigned" && !req.body.technicianAssigned)) {
+        update = {$set: {'name' : req.body.name, 'room' : req.body.room, 'desc' : req.body.desc, 'assigned' : req.body.technicianAssigned, 'status' : req.body.status}};
+      } else {
+        update = {$set: {'name' : req.body.name, 'room' : req.body.room, 'desc' : req.body.desc, 'assigned' : req.body.technicianAssigned, 'status' : 'In Progress'}};
+      }
       Ticket.update(query, update, function(err,doc){
         if (err) {throw err;}
       });
