@@ -50,7 +50,7 @@ module.exports = function(app, passport) {
       if (req.isAuthenticated()) {
         res.redirect('/');
       } else {
-        res.render('login.ejs');
+        res.render('login.ejs', {loginMessage: req.flash('loginMessage')});
       }
     });
 
@@ -93,8 +93,8 @@ module.exports = function(app, passport) {
             if (err)
                throw err;
             else
-               console.log('Ticket saved successfully.');
-               res.redirect('/ticketViewer');
+              req.flash('ticketMessage', 'Ticket Sent');
+              res.redirect('/ticketViewer');
         });
     });
 
@@ -136,12 +136,6 @@ module.exports = function(app, passport) {
         } else {
 
           var tickets = [];
-          var names = [];
-          var rooms = [];
-          var descs = [];
-          var authors = [];
-          var assigned = [];
-          var statuses = [];
 
           for (i=0; i < t.length; i++) {
             tickets.push({
@@ -153,12 +147,6 @@ module.exports = function(app, passport) {
               assigned : t[i].assigned,
               status : t[i].status,
             });
-            names.push(t[i].name.toLowerCase());
-            rooms.push(t[i].room.toLowerCase());
-            descs.push(t[i].desc.toLowerCase());
-            authors.push(t[i].author.toLowerCase());
-            assigned.push(t[i].assigned.toLowerCase());
-            statuses.push(t[i].status.toLowerCase());
           }
 
           Users.find({'local.isAdmin' : 'true'}, function(error,u) {
@@ -177,11 +165,7 @@ module.exports = function(app, passport) {
                   username : req.user.local.username,
                   tickets : tickets,
                   technicians : technicians,
-                  names : names,
-                  descs : descs,
-                  authors : authors,
-                  assigned : assigned,
-                  statuses : statuses
+                  ticketMessage : req.flash('ticketMessage')
               });
             }
           });
@@ -193,12 +177,6 @@ module.exports = function(app, passport) {
           throw err;
         } else {
           var tickets = [];
-          var names = [];
-          var rooms = [];
-          var descs = [];
-          var authors = [];
-          var assigned = [];
-          var statuses = [];
 
           for (i=0; i < t.length; i++) {
             tickets.push({
@@ -209,23 +187,12 @@ module.exports = function(app, passport) {
               assigned : t[i].assigned,
               status : t[i].status,
             });
-
-            names.push(t[i].name.toLowerCase());
-            rooms.push(t[i].room.toLowerCase());
-            descs.push(t[i].desc.toLowerCase());
-            authors.push(t[i].author.toLowerCase());
-            assigned.push(t[i].assigned.toLowerCase());
-            statuses.push(t[i].status.toLowerCase());
           }
 
           res.render('ticketviewer.ejs', {
               username : req.user.local.username,
               tickets : tickets,
-              names : names,
-              descs : descs,
-              authors : authors,
-              assigned : assigned,
-              statuses : statuses
+              ticketMessage : req.flash('ticketMessage')
           });
         }
       });
@@ -245,6 +212,16 @@ module.exports = function(app, passport) {
         if (err) {throw err;}
       });
       res.redirect('/ticketViewer');
+    });
+
+    app.get('/deleteTicket/:id', function(req,res){
+      var id = req.params.id;
+      var query = {'_id' : id};
+      Ticket.find(query).remove(err);
+      console.log('HELLO!!');
+      if (err) {
+        throw err;
+      }
     });
 
     app.get('*', function(req,res){

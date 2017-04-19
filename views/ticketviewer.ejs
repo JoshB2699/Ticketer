@@ -55,12 +55,12 @@
                 <table class = "table table-striped table-bordered table-hover" id = "ticketsTable" style = "width:100%">
                   <thead class = "thead-default">
                     <tr>
-                      <th style="cursor:pointer" onclick="sortMe(0)">Title</th>
-                      <th>Room</th>
-                      <th>Description</th>
-                      <th>User</th>
-                      <th>Status</th>
-                      <th>Assigned Technician</th>
+                      <th style="cursor:pointer" onclick="sortTable(0)">Title</th>
+                      <th style="cursor:pointer" onclick="sortTable(1)">Room</th>
+                      <th style="cursor:pointer" onclick="sortTable(2)">Description</th>
+                      <th style="cursor:pointer" onclick="sortTable(3)">User</th>
+                      <th style="cursor:pointer" onclick="sortTable(4)">Status</th>
+                      <th style="cursor:pointer" onclick="sortTable(5)">Assigned Technician</th>
                     </tr>
                   </thead>
                   <% for (var i=0; i < tickets.length; i++) {%>
@@ -79,89 +79,61 @@
           </div>
         </div>
       </div>
-      <script src="/webpack/bundle.js"></script>
-
-      <script>
-        // Sorting Code:
-
-        var headings = [];
-        setNotSorted(10);
-
-        // On click of th tag:
-        function sortMe(headingID) {
-          if (headings) {
-            //If virtual tracking table exists check the current sort order. If it is unsorted then sort it in ascending order and set all other heading as unsorted; if sorted in ascending order then sort it into descending order. If the virtual tracking table has not yet been created then set all headings as unsorted.
-            if (headings[headingID] == 'none') {
-              sort(headingID, 'asc');
-              setNotSorted(headingID);
+    <script>
+        function sortTable(n) {
+          var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+          table = document.getElementById("ticketsTable");
+          switching = true;
+          //Set the sorting direction to ascending:
+          dir = "asc";
+          /*Make a loop that will continue until
+          no switching has been done:*/
+          while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.getElementsByTagName("TR");
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 1; i < (rows.length - 1); i++) {
+              //start by saying there should be no switching:
+              shouldSwitch = false;
+              /*Get the two elements you want to compare,
+              one from current row and one from the next:*/
+              x = rows[i].getElementsByTagName("TD")[n];
+              y = rows[i + 1].getElementsByTagName("TD")[n];
+              /*check if the two rows should switch place,
+              based on the direction, asc or desc:*/
+              if (dir == "asc") {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                  //if so, mark as a switch and break the loop:
+                  shouldSwitch= true;
+                  break;
+                }
+              } else if (dir == "desc") {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                  //if so, mark as a switch and break the loop:
+                  shouldSwitch= true;
+                  break;
+                }
+              }
+            }
+            if (shouldSwitch) {
+              /*If a switch has been marked, make the switch
+              and mark that a switch has been done:*/
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+              //Each time a switch is done, increase this count by 1:
+              switchcount ++;
             } else {
-              if (headings[headingID] == 'asc') {
-                sort((headingID), desc);
-                setNotSorted((headingID));
-              } else {
-                sort((headingID), 'asc');
-                setNotSorted((headingID));
+              /*If no switching has been done AND the direction is "asc",
+              set the direction to "desc" and run the while loop again.*/
+              if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
               }
             }
           }
         }
-
-        function sort(heading, order) {
-          var sortArray = <%- JSON.stringify(names)%>;
-
-          if (sortArray.length < 2) {
-            return sortArray;
-          } else {
-            var middle = parseInt(sortArray.length / 2);
-            var left   = sortArray.slice(0, middle);
-            var right  = sortArray.slice(middle, sortArray.length);
-
-           return merge(mergeSort(left), mergeSort(right));
-          }
-        }
-
-        function mergeSort(arr)
-        {
-            if (arr.length < 2)
-                return arr;
-
-            var middle = parseInt(arr.length / 2);
-            var left   = arr.slice(0, middle);
-            var right  = arr.slice(middle, arr.length);
-
-            return merge(mergeSort(left), mergeSort(right));
-        }
-
-        function merge(left, right)
-        {
-            var result = [];
-
-            while (left.length && right.length) {
-                if (left[0] <= right[0]) {
-                    result.push(left.shift());
-                } else {
-                    result.push(right.shift());
-                }
-            }
-
-            while (left.length)
-                result.push(left.shift());
-
-            while (right.length)
-                result.push(right.shift());
-
-            console.log(result);
-
-            return result;
-        }
-
-        function setNotSorted(id) {
-          for(var i = 0; i < 6; i++) {
-            if(i !== id) {
-              headings[i] = 'none';
-            }
-          }
-        }
-      </script>
+    </script>
   </body>
 </html>

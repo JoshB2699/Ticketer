@@ -7,8 +7,27 @@
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+      .message{
+
+      }
+    </style>
   </head>
   <body>
+
+    <% if ( loginMessage.length > 0 ) { %>
+      <div class="container" id="flash">
+        <div class="row">
+          <div class = "col-sm-4"></div>
+          <div class = "col-sm-4">
+            <div class="alert alert-danger alert-block">
+              <div class="message" align="center"> <%= loginMessage %></div>
+            </div>
+          </div>
+          <div class = "col-sm-4"></div>
+        </div>
+      </div>
+    <% } %>
 
     <div class = "container">
       <div class = "row">

@@ -7,13 +7,6 @@
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script>
-      $(function() {
-       $('#top-alert').delay(500).fadeIn('normal', function() {
-          $(this).delay(2000).fadeOut();
-       });
-      });
-    </script>
     <link href="public/css/navbar.css" rel="stylesheet" type="text/css" />
     <style>
       body {
@@ -72,16 +65,10 @@
         }
       }
 
-      #top-alert {
-        position: fixed;
-        top: 0;
-        z-index: 99999;
-        }
-
       textarea { resize: none; }
-    </style>
+      </style>
   </head>
-  <body>
+  <body onload="defaultTable()">
     <% for (var i=0; i < tickets.length; i++) {%>
       <div id="specificTicket<%= i %>" class="overlay">
         <a href="javascript:void(0)" class="closebtn" onclick="closeTicket(<%= i %>)">&times;</a>
@@ -92,12 +79,14 @@
                 <div class="col-sm-12">
                   <h4>
                     <form name="ticketform" action="/updateTicket/<%=tickets[i].id%>" method="post">
-                      <div class="form-group">
+
                       <div class="row">
                         <div class="col-sm-4">
+                          <div class="form-group">
                             <label for="name">Ticket Name: </label>
                             <input class="form-control" type="text" name="name" id="name" value="<%=tickets[i].name%>" placeholder="Name" required="true">
                           </div>
+                        </div>
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label for="room">Room: </label>
@@ -154,34 +143,15 @@
                         <div class="col-sm-3">
                           <button type="submit"  name="ticketform" id="ticketform" class="btn btn-block btn-primary">Update Ticket</button>
                         </div>
-                        <div class="col-sm-6">
-                        </div>
-                        <div class="col-sm-3">
-                          <a href = "/deleteTicket/<%= tickets[i].id %>"><button class="btn btn-block btn-primary">Delete Ticket</button></a>
+                        <div class="col-sm-9">
                         </div>
                       </div>
-                    </div>
-                    </div>
                     </form>
                   </h4>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    <% } %>
-
-    <% if ( ticketMessage.length > 0 ) { %>
-      <div class = "container">
-        <div class = "row">
-          <div class = "col-sm-4"></div>
-          <div class = "col-sm-4">
-            <div id="top-alert" class="alert alert-success alert-block">
-              <div class="message" align="center"> <%= ticketMessage %></div>
-            </div>
-          </div>
-          <div class = "col-sm-4"></div>
         </div>
       </div>
     <% } %>
@@ -197,145 +167,166 @@
           </button>
         </div>
         <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="/">Home</a></li>
-            <li><a href="/createTicket">Create Ticket</a></li>
-            <li class="active"><a href="/ticketViewer">View Tickets</a></li>
-          </ul>
-          <ul class="nav navbar-nav pull-right">
-            <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= username%>
-              <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="/changePassword">Change Password</a></li>
-                <li><a href ="/logout">Logout</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
+        <ul class="nav navbar-nav">
+          <li><a href="/">Home</a></li>
+          <li><a href="/createTicket">Create Ticket</a></li>
+          <li class="active"><a href="/ticketViewer">View Tickets</a></li>
+        </ul>
+        <ul class="nav navbar-nav pull-right">
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= username%>
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/changePassword">Change Password</a></li>
+              <li><a href ="/logout">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
       </div>
     </nav>
 
     <div class="container">
-      <div class="jumbotron">
-        <div class="row">
-          <div class="col-sm-3">
-            <h2>Active Tickets</h2>
+        <div class="jumbotron">
+          <div class="row">
+            <div class="col-sm-3">
+              <h2>Active Tickets</h2>
+            </div>
+            <div class="col-sm-9">
+            </div>
           </div>
-          <div class="col-sm-9">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <h4>
-              <table id = "ticketsTable" class = "table table-striped table-bordered table-hover" style = "width:100%">
-                <thead class = "thead-default">
-                  <tr>
-                    <th style="cursor:pointer" onclick="sortTable(0)">Title</th>
-                    <th style="cursor:pointer" onclick="sortTable(1)">Room</th>
-                    <th style="cursor:pointer" onclick="sortTable(2)">Description</th>
-                    <th style="cursor:pointer" onclick="sortTable(3)">User</th>
-                    <th style="cursor:pointer" onclick="sortTable(4)">Status</th>
-                    <th style="cursor:pointer" onclick="sortTable(5)">Assigned Technician</th>
-                  </tr>
-                </thead>
-                <% for (var i=0; i < tickets.length; i++) {%>
-                  <tr style="cursor:pointer" onclick="openTicket(<%= i %>)">
-                    <td><%=tickets[i].name %></td>
-                    <td><%=tickets[i].room %></td>
-                    <td><%=tickets[i].desc %></td>
-                    <td><%=tickets[i].author %></td>
-                    <td><%=tickets[i].status %></td>
-                    <td><%=tickets[i].assigned %></td>
-                  </tr>
-                <% } %>
-              </table>
-            </h4>
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>
+                <div id="ticketTable">
+
+                </div>
+              </h4>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <script>
-      function openTicket(i) {
-          document.getElementById("specificTicket" + i).style.height = "100%";
-      }
+      <script>
+        function openTicket(i) {
+            document.getElementById("specificTicket" + i).style.height = "100%";
+        }
 
-      function closeTicket(i) {
-          document.getElementById("specificTicket" + i).style.height = "0%";
-      }
+        function closeTicket(i) {
+            document.getElementById("specificTicket" + i).style.height = "0%";
+        }
 
-      document.onkeydown = function(evt) {
-          evt = evt || window.event;
-          var isEscape = false;
-          if ("key" in evt) {
-              isEscape = (evt.key == "Escape" || evt.key == "Esc");
-          } else {
-              isEscape = (evt.keyCode == 27);
-          }
-          if (isEscape) {
-            <% for (var i=0; i < tickets.length; i++) {%>
-              closeTicket(<%=i%>);
-            <% } %>
-          }
-      };
-    </script>
-
-    <script>
-      function sortTable(n) {
-        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-        table = document.getElementById("ticketsTable");
-        switching = true;
-        //Set the sorting direction to ascending:
-        dir = "asc";
-        /*Make a loop that will continue until
-        no switching has been done:*/
-        while (switching) {
-          //start by saying: no switching is done:
-          switching = false;
-          rows = table.getElementsByTagName("TR");
-          /*Loop through all table rows (except the
-          first, which contains table headers):*/
-          for (i = 1; i < (rows.length - 1); i++) {
-            //start by saying there should be no switching:
-            shouldSwitch = false;
-            /*Get the two elements you want to compare,
-            one from current row and one from the next:*/
-            x = rows[i].getElementsByTagName("TD")[n];
-            y = rows[i + 1].getElementsByTagName("TD")[n];
-            /*check if the two rows should switch place,
-            based on the direction, asc or desc:*/
-            if (dir == "asc") {
-              if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                //if so, mark as a switch and break the loop:
-                shouldSwitch= true;
-                break;
-              }
-            } else if (dir == "desc") {
-              if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                //if so, mark as a switch and break the loop:
-                shouldSwitch= true;
-                break;
-              }
+        document.onkeydown = function(evt) {
+            evt = evt || window.event;
+            var isEscape = false;
+            if ("key" in evt) {
+                isEscape = (evt.key == "Escape" || evt.key == "Esc");
+            } else {
+                isEscape = (evt.keyCode == 27);
             }
-          }
-          if (shouldSwitch) {
-            /*If a switch has been marked, make the switch
-            and mark that a switch has been done:*/
-            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-            switching = true;
-            //Each time a switch is done, increase this count by 1:
-            switchcount ++;
-          } else {
-            /*If no switching has been done AND the direction is "asc",
-            set the direction to "desc" and run the while loop again.*/
-            if (switchcount == 0 && dir == "asc") {
-              dir = "desc";
-              switching = true;
+            if (isEscape) {
+              <% for (var i=0; i < tickets.length; i++) {%>
+                closeTicket(<%=i%>);
+              <% } %>
+            }
+        };
+      </script>
+
+      <script>
+        // Sorting Code:
+
+        var headings = [];
+        setNotSorted(10);
+
+        // On click of th tag:
+        function sortTable(headingID) {
+          if (headings) {
+            //If virtual tracking table exists check the current sort order. If it is unsorted then sort it in ascending order and set all other heading as unsorted; if sorted in ascending order then sort it into descending order. If the virtual tracking table has not yet been created then set all headings as unsorted.
+            if (headings[headingID] == 'none') {
+              sort(headingID, 'asc');
+              setNotSorted(headingID);
+            } else {
+              if (headings[headingID] == 'asc') {
+                sort((headingID), desc);
+                setNotSorted((headingID));
+              } else {
+                sort((headingID), 'asc');
+                setNotSorted((headingID));
+              }
             }
           }
         }
-      }
+
+        function sort(heading, order) {
+          var sortArray = <%- JSON.stringify(tickets)%>;
+
+          console.log(sortArray)
+
+          if (sortArray.length < 2) {
+            return sortArray;
+          } else {
+            var middle = parseInt(sortArray.length / 2);
+            var left   = sortArray.slice(0, middle);
+            var right  = sortArray.slice(middle, sortArray.length);
+
+           return merge(mergeSort(left), mergeSort(right));
+          }
+        }
+
+        function mergeSort(arr)
+        {
+            if (arr.length < 2)
+                return arr;
+
+            var middle = parseInt(arr.length / 2);
+            var left   = arr.slice(0, middle);
+            var right  = arr.slice(middle, arr.length);
+
+            return merge(mergeSort(left), mergeSort(right));
+        }
+
+        function merge(left, right)
+        {
+            var result = [];
+
+            while (left.length && right.length) {
+                if (left[0] <= right[0]) {
+                    result.push(left.shift());
+                } else {
+                    result.push(right.shift());
+                }
+            }
+
+            while (left.length)
+                result.push(left.shift());
+
+            while (right.length)
+                result.push(right.shift());
+
+            console.log(result);
+
+            return result;
+        }
+
+        function setNotSorted(id) {
+          for(var i = 0; i < 6; i++) {
+            if(i !== id) {
+              headings[i] = 'none';
+            }
+          }
+        }
       </script>
+
+      <script>
+        function defaultTable() {
+          var html = '<table class = "table table-striped table-bordered table-hover" style = "width:100%"> <thead class = "thead-default"> <tr> <th style="cursor:pointer" onclick="sortTable(0)">Title</th> <th>Room</th> <th>Description</th> <th>User</th> <th>Status</th> <th>Assigned Technician</th> </tr> </thead>'
+          <% for (var i=0; i < tickets.length; i++) {%>
+            html += '<tr href="/viewSpecificTicket/<%=tickets[i].ticketid %>"> <td><span style="cursor:pointer" onclick="openTicket(<%= i %>)"><%=tickets[i].name %></span></td> <td><%=tickets[i].room %></td> <td><%=tickets[i].desc %></td> <td><%=tickets[i].author %></td> <td><%=tickets[i].status %></td> <td><%=tickets[i].assigned %></td> </tr>'
+          <% } %>
+          html += ' </table>'
+          $("#ticketTable").append(html);
+        }
+      </script>
+
   </body>
 </html>
