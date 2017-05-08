@@ -1,4 +1,9 @@
+.navbar {
+  margin-bottom: 10px;
+}
+
 @media (max-width: 900px) {
+
   .navbar-header {
     float: none;
   }

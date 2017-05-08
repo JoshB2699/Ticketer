@@ -6,6 +6,7 @@ var ticketSchema = mongoose.Schema({
         desc  : String,
         author : String,
         status : String,         //Reported, In Progress, Completed
+        isArchived : Boolean,
         assigned : String,
 });
 

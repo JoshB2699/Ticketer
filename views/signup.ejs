@@ -8,38 +8,33 @@
     <link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="public/css/navbar.css" rel="stylesheet" type="text/css" />
+    <script>
+      $(function() {
+       $('#top-alert').delay(500).fadeIn('normal', function() {
+          $(this).delay(2000).fadeOut();
+          $('#hideme').delay(2000).fadeOut();
+       });
+      });
+    </script>
+    <link href="public/css/adminViewer.css" rel="stylesheet" type="text/css" />
   </head>
 
   <body>
-    <nav class="navbar navbar-inverse navbar-static-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="/">Ticketer </a>
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+    <%- include includes/navbar.ejs %>
+
+    <% if ( signupMessage.length > 0 ) { %>
+      <div class="container" id="flash">
+        <div class="row">
+          <div class = "col-sm-3"></div>
+          <div class = "col-sm-6">
+            <div class="alert alert-danger alert-block" id="top-alert">
+              <div class="message" align="center"> <%= signupMessage %></div>
+            </div>
+          </div>
+          <div class = "col-sm-3"></div>
         </div>
-        <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-          <li><a href="/">Home</a></li>
-          <li><a href="/createTicket">Create Ticket</a></li>
-          <li><a href="/ticketViewer">View Tickets</a></li>
-        </ul>
-        <ul class="nav navbar-nav pull-right">
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= username%>
-            <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="/changePassword">Change Password</a></li>
-              <li><a href ="/logout">Logout</a></li>
-            </ul>
-          </li>
-        </ul>
       </div>
-      </div>
-    </nav>
+    <% } %>
 
     <div class = "container">
       <div class = "row">

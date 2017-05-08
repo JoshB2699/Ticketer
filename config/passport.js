@@ -53,11 +53,11 @@ module.exports = function(passport) {
 
                 // if there is no user with that username
                 // create the user
-                var newUser            = new User();
+                var newUser = new User();
 
-                // set the user's local credentials
-                newUser.local.username    = username;
-                newUser.local.password = newUser.generateHash(password);
+                // set the user's credentials.
+                newUser.local.username = username;
+                newUser.local.password = newUser.generateHash(password); //hash the password input by the user.
 
                 if (req.body.adminUser == 'on') {
                   newUser.local.isAdmin = true;
@@ -66,7 +66,7 @@ module.exports = function(passport) {
                 }
 
 
-                // save the user
+                // save the user to the database.
                 newUser.save(function(err) {
                     if (err)
                         throw err;
@@ -103,11 +103,11 @@ module.exports = function(passport) {
 
              // if no user is found, return the message
              if (!user)
-                 return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+                 return done(null, false, req.flash('loginMessage', 'Incorrect username or password.')); // req.flash is the way to set flashdata using connect-flash
 
              // if the user is found but the password is wrong
              if (!user.validPassword(password))
-                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+                 return done(null, false, req.flash('loginMessage', 'Incorrect username or password.')); // create the loginMessage and save it to session as flashdata
 
              // all is well, return successful user
              return done(null, user);
